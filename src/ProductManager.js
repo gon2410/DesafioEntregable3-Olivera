@@ -61,27 +61,23 @@ class ProductManager {
     }
 
 
-    updateProduct(id) {
-        const leer = async () => {
-            try {
-                let contenido = await fs.promises.readFile(this.path, "utf-8");
-                let objContenido = JSON.parse(contenido);
-                let result = objContenido.find(elem => elem.id == id);
-                if (result != undefined) {
-                    result.price = 350;
-                    result.stock = 1000;
-                    guardar(objContenido);
-                    console.log("Producto actualizado!")
-                } else {
-                    return "Not found";
-                }
-            } catch (error) {
-                console.log(error);
+    async updateProduct(id) {
+        try {
+            let contenido = await fs.promises.readFile(this.path, "utf-8");
+            let objContenido = JSON.parse(contenido);
+            let result = objContenido.find(elem => elem.id == id);
+            if (result != undefined) {
+                result.price = 350;
+                result.stock = 1000;
+                await fs.promises.writeFile(JSON.stringify(objContenido));
+                return "Producto actualizado!"
+            } else {
+                return "Not found";
             }
+        } catch (error) {
+            console.log(error);
         }
-
-        leer();
-    }
+    }  
 }
 
 
