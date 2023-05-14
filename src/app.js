@@ -8,8 +8,9 @@ app.use(express.urlencoded({extended: true}));
 const manager = new ProductManager();
 
 app.get("/productos", async (req, res) => {
+    let { limit } = req.query;
     let productos = await manager.getProducts()
-    res.send(productos);
+    res.send(productos.slice(0, limit));
 })
 
 app.get("/productos/:id", async (req, res) => {
